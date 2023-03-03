@@ -1,0 +1,51 @@
+{% extends "app_layout.html" %}
+{% block app_layout %}
+<div class="container-fluid bills">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('bills.bill_index') }}">Bills</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          Add Bill</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='subscription') }}">Subscription</a>
+            <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='rentMortgage') }}">Rent/Mortgage</a>
+            <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='utility') }}">Utility</a>
+            <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='pmtPlan') }}">Payment Plan</a>
+            <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='other') }}">Other</a>
+          </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('bills.past_bills') }}">Past Bills</a>
+      </li>
+    </ul>
+  </div>
+</div>
+  <div class="card-body bill-card-content">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Due</th>
+        </tr>
+      </thead>
+     {% for bill in bills %}
+      <tr>
+        <td>{{ bill.name }}</td>
+        <td>{{ bill.amount }}</td>
+        <td>{{ bill.due.strftime('%d-%B-%Y') }}</td>
+        <td>
+          <form action="{{ url_for('bills.delete_past_bill', bill_id=bill.id) }}" method="post">
+            <input class="btn btn-secondary" type ="submit" value="Remove">
+        </form>
+      </td>
+    {% endfor %}
+    </table>
+  </div>
+
+
+
+{% endblock %}

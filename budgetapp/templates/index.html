@@ -1,0 +1,14 @@
+{% extends 'base_template.html' %}
+{% block content %}
+<body class="index-body">
+<div class ="h-100 row align-items-center welcome">
+    <div class="col">
+        <h1 class="cover-heading">Welcome</h1>
+        <p class="lead">Please login to continue to the budget app</p>
+        <p class="lead">
+            <a href="{{ url_for('users.login') }}" class="btn btn-lg btn-info btn-color">Login</a> <a href="{{ url_for('users.register') }}" class="btn btn-lg btn-info btn-color">Register</a>
+        </p>
+    </div>
+</div>
+</body>
+{% endblock content %}

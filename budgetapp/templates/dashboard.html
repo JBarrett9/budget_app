@@ -1,0 +1,56 @@
+{% extends 'app_layout.html' %}
+{% block app_layout %}
+<div class="container-fluid top-margin">
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="center-text">{{ greeting }} {{ user }}</h2>
+      <br>
+      <h3>Expense Breakdown</h3>
+      <canvas id="chart" width="600" height="400"></canvas>
+      <script>
+        var chartData = [
+          {% for value, label, color in set %}
+          {
+            value: {{ value }},
+            label: "{{ label }}",
+            color: "{{ color }}"
+          },
+          {% endfor %}
+        ];
+
+        var billChart = document.getElementById("chart").getContext("2d");
+        steps = 5
+
+        new Chart(document.getElementById("chart").getContext("2d")).Pie(chartData);
+      </script>
+    </div>
+    <div class="col-md-4">
+      <ul class="list-group list-group-flush center-text">
+        <h3>Upcoming Bills</h3>
+      {% if bills.count() == 0 %}
+        <h5>You currently have no upcoming bills to display</h5>
+        <li class="list-group-item dropdown">
+          <a class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            Add Bill</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='subscription') }}">Subscription</a>
+              <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='rentMortgage') }}">Rent/Mortgage</a>
+              <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='utility') }}">Utility</a>
+              <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='pmtPlan') }}">Payment Plan</a>
+              <a class="dropdown-item" href="{{ url_for('bills.add_bill', category='other') }}">Other</a>
+            </div>
+        </li>
+      {% endif %}
+      {% for bill in bills %}
+        <li class="list-group-item">{{ bill }}</li>
+      {% endfor %}
+      {% if bills.count() > 0 %}
+      <a href="{{ url_for('bills.bill_index') }}">View All</a>
+      {% endif %}
+      </ul>
+    </div>
+    </div>
+  </div>
+<!-- <script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src='{{ url_for('static', filename='scripts/dashboard.js') }}'></script> -->
+{% endblock app_layout %}
